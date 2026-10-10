@@ -4,11 +4,11 @@ Created by **Ellis Morgan ([@ellismorg](https://github.com/ellismorg))**.
 
 Automatic dwindle tiling for KDE Plasma 6, with keyboard navigation, small gaps, window groups and scratchpads. Inspired by a Hyprland workflow while keeping KDE's window manager, panels and decorations.
 
-Version 0.2.4. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
+Version 0.2.5. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
 
 ## Install
 
-Import `morg-tiling-0.2.4.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
+Import `morg-tiling-0.2.5.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
 
 KDE retains existing shortcuts. Conflicts can leave an action unassigned; check System Settings → Keyboard → Shortcuts → KWin for actions beginning **Morg Tiling**. Importing the package does not configure modifier mouse dragging.
 
@@ -26,7 +26,7 @@ Super means Meta, usually the Windows key.
 
 | Keys | Action |
 |---|---|
-| Super + arrows | Focus, including fullscreen windows and other monitors |
+| Super + arrows | Focus windows or the desktop on an adjacent empty monitor |
 | Super + Shift + arrows | Swap tiles or move toward another monitor |
 | Super + Alt + arrows | Move the nearest split boundary in that direction |
 | Super + Minus / Equal | Shrink / grow width |
@@ -87,7 +87,7 @@ Scratchpads=true
 - Mouse-based resizing follows KWin and updates split ratios after the drag ends.
 - Application IDs differ between native, Flatpak and XWayland builds; some rules may need adjustment.
 - Fullscreen browser-video focus has regression tests; different browser/session combinations still need user testing.
-- Tested with 50 engine regression tests and 6 development installer tests. These simulate windows and do not replace live compositor testing.
+- Tested with 55 engine regression tests and 6 development installer tests. These simulate windows and do not replace live compositor testing.
 
 ## Remove
 
@@ -103,4 +103,4 @@ The original SVG icon is included in `contents/icons/morg-tiling.svg`. KWin meta
 
 New app windows open on the monitor under the pointer and the current desktop, including launches from Plasma Application Launcher. Existing windows, transient dialogs, pinned windows and windows assigned to multiple desktops are not relocated. Set `OpenAtPointer=false` to use KDE's normal placement. Pointer position is sampled when a new window is created.
 
-When the desktop has focus, Super + arrows enters a visible window using the pointer position. If there is no window in that direction, it selects the nearest visible window, preferring the pointer monitor. Minimized windows and other desktops are excluded.
+Super + arrows navigates within the current monitor, then onto the next monitor in that direction, including its desktop when empty. Empty monitors between occupied monitors are not skipped. The pointer moves to the empty monitor's center, so launcher apps open there. Navigation does not wrap at the edge of the monitor layout. When the desktop has focus, arrows can enter a visible window; if no adjacent monitor or directional window exists, the nearest window on that monitor is selected. Minimized windows and other desktops are excluded. Empty-monitor navigation always moves the pointer, including with `WarpPointer=false`, because the pointer identifies that desktop for subsequent navigation and app placement.
