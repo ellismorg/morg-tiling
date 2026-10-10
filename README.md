@@ -4,11 +4,11 @@ Created by **Ellis Morgan ([@ellismorg](https://github.com/ellismorg))**.
 
 Automatic dwindle tiling for KDE Plasma 6, with keyboard navigation, small gaps, window groups and scratchpads. Inspired by a Hyprland workflow while keeping KDE's window manager, panels and decorations.
 
-Version 0.3.0. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
+Version 0.3.2. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
 
 ## Install
 
-Import `morg-tiling-0.3.0.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
+Import `morg-tiling-0.3.2.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
 
 KDE retains existing shortcuts. Conflicts can leave an action unassigned; check System Settings → Keyboard → Shortcuts → KWin for actions beginning **Morg Tiling**. Importing the package does not configure modifier mouse dragging.
 
@@ -22,7 +22,7 @@ Hover focus is enabled with zero delay while the script runs. Keyboard focus cha
 
 ## Animations and focus highlight
 
-Keyboard focus changes briefly outline the selected window using KDE's native outline style. The highlight lasts 450 ms, follows geometry changes, and disappears on focus changes, desktop changes, window closure, interactive dragging, pause or script unload. Hover focus stays instant and does not flash an outline. Set `FocusHighlight=false` to disable it, or adjust `FocusHighlightDuration` in `[Script-morg-tiling]`.
+The active window has a persistent thin blue border with a completely transparent center. It follows keyboard, mouse-hover and click focus, as well as window movement and resizing, including fullscreen windows. Selecting an empty desktop hides the border. Pausing or unloading the script removes it. Set `FocusHighlight=false` in `[Script-morg-tiling]` to disable it. The earlier timed native KDE highlight has been replaced; `FocusHighlightDuration` is no longer used. No panel tint or focus flash is drawn.
 
 Smooth movement and resizing use the optional companion **Morg Tiling Animations** desktop effect. Apps receive their final geometry once; the compositor animates its appearance with an easing curve over 180 ms. Rapid changes continue from the current visual position. Mouse dragging stays direct; panels, popups, fullscreen windows, minimization and fullscreen desktop effects are excluded. The companion also smooths other programmatic geometry changes to normal app windows, including floating windows. Disable the companion separately if you disable the tiling script.
 
@@ -98,7 +98,6 @@ SingleGap=20
 ResizeStep=0.1
 HoverFocus=true
 FocusHighlight=true
-FocusHighlightDuration=450
 WarpPointer=true
 OpenAtPointer=true
 Groups=true
