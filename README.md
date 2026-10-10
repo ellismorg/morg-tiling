@@ -4,11 +4,11 @@ Created by **Ellis Morgan ([@ellismorg](https://github.com/ellismorg))**.
 
 Automatic dwindle tiling for KDE Plasma 6, with keyboard navigation, small gaps, window groups and scratchpads. Inspired by a Hyprland workflow while keeping KDE's window manager, panels and decorations.
 
-Version 0.2.5. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
+Version 0.3.0. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
 
 ## Install
 
-Import `morg-tiling-0.2.5.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
+Import `morg-tiling-0.3.0.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
 
 KDE retains existing shortcuts. Conflicts can leave an action unassigned; check System Settings → Keyboard → Shortcuts → KWin for actions beginning **Morg Tiling**. Importing the package does not configure modifier mouse dragging.
 
@@ -19,6 +19,32 @@ New windows split the focused tile along its longer dimension. Layouts are separ
 Defaults: 10 logical pixels between windows, 10 at the outside, and 20 around a single tile. Fullscreen and maximized windows retain their native geometry. Directional navigation includes fullscreen windows, including browser fullscreen video on another output, and skips tiles hidden behind a fullscreen window on that output.
 
 Hover focus is enabled with zero delay while the script runs. Keyboard focus changes move the pointer into the selected window through KWin's native action. To preserve your own mouse-focus policy, set `HoverFocus=false`. To disable pointer movement, set `WarpPointer=false`.
+
+## Animations and focus highlight
+
+Keyboard focus changes briefly outline the selected window using KDE's native outline style. The highlight lasts 450 ms, follows geometry changes, and disappears on focus changes, desktop changes, window closure, interactive dragging, pause or script unload. Hover focus stays instant and does not flash an outline. Set `FocusHighlight=false` to disable it, or adjust `FocusHighlightDuration` in `[Script-morg-tiling]`.
+
+Smooth movement and resizing use the optional companion **Morg Tiling Animations** desktop effect. Apps receive their final geometry once; the compositor animates its appearance with an easing curve over 180 ms. Rapid changes continue from the current visual position. Mouse dragging stays direct; panels, popups, fullscreen windows, minimization and fullscreen desktop effects are excluded. The companion also smooths other programmatic geometry changes to normal app windows, including floating windows. Disable the companion separately if you disable the tiling script.
+
+Install the companion archive from this repository using:
+
+```sh
+kpackagetool6 --type KWin/Effect --install morg-tiling-animations-0.3.0.tar.gz
+kwriteconfig6 --file kwinrc --group Plugins --key morg-tiling-animationsEnabled true
+qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect morg-tiling-animations
+```
+
+Some distributions name the D-Bus command `qdbus` instead of `qdbus6`. The effect appears as **Morg Tiling Animations** in System Settings → Desktop Effects. Use `--upgrade` instead of `--install` when updating an existing effect.
+
+Its settings in `~/.config/kwinrc` are:
+
+```ini
+[Effect-morg-tiling-animations]
+Enabled=true
+Duration=180
+```
+
+Duration is milliseconds, adjusted by KDE's global animation speed. Set it to `0` or disable the effect for instant movement. After manually editing settings, run `qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure` to reload them. Animations change rendering only; input and hover focus use the final window geometry during the short transition.
 
 ## Shortcuts
 
@@ -71,6 +97,8 @@ OuterGap=10
 SingleGap=20
 ResizeStep=0.1
 HoverFocus=true
+FocusHighlight=true
+FocusHighlightDuration=450
 WarpPointer=true
 OpenAtPointer=true
 Groups=true
@@ -87,11 +115,11 @@ Scratchpads=true
 - Mouse-based resizing follows KWin and updates split ratios after the drag ends.
 - Application IDs differ between native, Flatpak and XWayland builds; some rules may need adjustment.
 - Fullscreen browser-video focus has regression tests; different browser/session combinations still need user testing.
-- Tested with 55 engine regression tests and 6 development installer tests. These simulate windows and do not replace live compositor testing.
+- Tested with 58 tiling and 13 animation regression tests and 6 development installer tests. These simulate windows and do not replace live compositor testing.
 
 ## Remove
 
-Disable Morg Tiling in KWin Scripts. Windows remain open.
+Disable Morg Tiling in KWin Scripts and Morg Tiling Animations in Desktop Effects. Windows remain open.
 
 ## License and icon
 
