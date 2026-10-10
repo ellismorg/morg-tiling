@@ -4,17 +4,17 @@ Created by **Ellis Morgan ([@ellismorg](https://github.com/ellismorg))**.
 
 Automatic dwindle tiling for KDE Plasma 6, with keyboard navigation, small gaps, window groups and scratchpads. Inspired by a Hyprland workflow while keeping KDE's window manager, panels and decorations.
 
-Version 0.3.2. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
+Version 0.3.3. Tested on Plasma 6.6.6 Wayland. GPLv3 license.
 
 ## Install
 
-Import `morg-tiling-0.3.2.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
+Import `morg-tiling-0.3.3.kwinscript` in System Settings → Window Management → KWin Scripts, then enable **Morg Tiling**. Disable other automatic tilers first.
 
 KDE retains existing shortcuts. Conflicts can leave an action unassigned; check System Settings → Keyboard → Shortcuts → KWin for actions beginning **Morg Tiling**. Importing the package does not configure modifier mouse dragging.
 
 ## Behaviour
 
-New windows split the focused tile along its longer dimension. Layouts are separate for each output and desktop. Closing, minimizing and restoring windows reflows the layout. Panels and application minimum sizes are respected; windows that cannot fit temporarily float.
+New windows split the tile under the mouse along its longer dimension. The pointer position chooses the side of the split: near the left of one wide window, the new window opens on the left; near the bottom-left of two side-by-side windows, it opens below the left tile. Pointer positions in gaps use the nearest visible tile. Set `OpenAtPointer=false` to retain focused-tile insertion. Layouts are separate for each output and desktop. Closing, minimizing and restoring windows reflows the layout. Panels and application minimum sizes are respected; windows that cannot fit temporarily float.
 
 Defaults: 10 logical pixels between windows, 10 at the outside, and 20 around a single tile. Fullscreen and maximized windows retain their native geometry. Directional navigation includes fullscreen windows, including browser fullscreen video on another output, and skips tiles hidden behind a fullscreen window on that output.
 
@@ -22,7 +22,7 @@ Hover focus is enabled with zero delay while the script runs. Keyboard focus cha
 
 ## Animations and focus highlight
 
-The active window has a persistent thin blue border with a completely transparent center. It follows keyboard, mouse-hover and click focus, as well as window movement and resizing, including fullscreen windows. Selecting an empty desktop hides the border. Pausing or unloading the script removes it. Set `FocusHighlight=false` in `[Script-morg-tiling]` to disable it. The earlier timed native KDE highlight has been replaced; `FocusHighlightDuration` is no longer used. No panel tint or focus flash is drawn.
+The active window has a persistent thin blue border with a completely transparent center. It ignores mouse input, including on Plasma 6.6, so hover and clicks reach the application underneath. It follows keyboard, mouse-hover and click focus, as well as window movement and resizing, including fullscreen windows. Selecting an empty desktop hides the border. Pausing or unloading the script removes it. Set `FocusHighlight=false` in `[Script-morg-tiling]` to disable it. The earlier timed native KDE highlight has been replaced; `FocusHighlightDuration` is no longer used. No panel tint or focus flash is drawn.
 
 Smooth movement and resizing use the optional companion **Morg Tiling Animations** desktop effect. Apps receive their final geometry once; the compositor animates its appearance with an easing curve over 180 ms. Rapid changes continue from the current visual position. Mouse dragging stays direct; panels, popups, fullscreen windows, minimization and fullscreen desktop effects are excluded. The companion also smooths other programmatic geometry changes to normal app windows, including floating windows. Disable the companion separately if you disable the tiling script.
 
@@ -128,6 +128,6 @@ Licensed under **GNU GPL version 3 only** (`GPL-3.0-only`); see [LICENSE](LICENS
 
 The original SVG icon is included in `contents/icons/morg-tiling.svg`. KWin metadata uses the standard `view-grid` icon for portability.
 
-New app windows open on the monitor under the pointer and the current desktop, including launches from Plasma Application Launcher. Existing windows, transient dialogs, pinned windows and windows assigned to multiple desktops are not relocated. Set `OpenAtPointer=false` to use KDE's normal placement. Pointer position is sampled when a new window is created.
+New app windows open on the monitor under the pointer and the current desktop, including launches from Plasma Application Launcher. Existing windows, transient dialogs, pinned windows and windows assigned to multiple desktops are not relocated. Set `OpenAtPointer=false` to retain KDE's monitor placement and focused-tile insertion. Pointer position is sampled when a new window is created.
 
 Super + arrows navigates within the current monitor, then onto the next monitor in that direction, including its desktop when empty. Empty monitors between occupied monitors are not skipped. The pointer moves to the empty monitor's center, so launcher apps open there. Navigation does not wrap at the edge of the monitor layout. When the desktop has focus, arrows can enter a visible window; if no adjacent monitor or directional window exists, the nearest window on that monitor is selected. Minimized windows and other desktops are excluded. Empty-monitor navigation always moves the pointer, including with `WarpPointer=false`, because the pointer identifies that desktop for subsequent navigation and app placement.
