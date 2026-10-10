@@ -20,9 +20,7 @@ Defaults: 10 logical pixels between windows, 10 at the outside, and 20 around a 
 
 Hover focus is enabled with zero delay while the script runs. Keyboard focus changes move the pointer into the selected window through KWin's native action. To preserve your own mouse-focus policy, set `HoverFocus=false`. To disable pointer movement, set `WarpPointer=false`.
 
-## Animations and focus highlight
-
-The active window has a persistent thin blue border with a completely transparent center. It ignores mouse input, including on Plasma 6.6, so hover and clicks reach the application underneath. It follows keyboard, mouse-hover and click focus, as well as window movement and resizing, including fullscreen windows. Selecting an empty desktop hides the border. Pausing or unloading the script removes it. Set `FocusHighlight=false` in `[Script-morg-tiling]` to disable it. The earlier timed native KDE highlight has been replaced; `FocusHighlightDuration` is no longer used. No panel tint or focus flash is drawn.
+## Animations
 
 Smooth movement and resizing use the optional companion **Morg Tiling Animations** desktop effect. Apps receive their final geometry once; the compositor animates its appearance with an easing curve over 180 ms. Rapid changes continue from the current visual position. Mouse dragging stays direct; panels, popups, fullscreen windows, minimization and fullscreen desktop effects are excluded. The companion also smooths other programmatic geometry changes to normal app windows, including floating windows. Disable the companion separately if you disable the tiling script.
 
@@ -97,7 +95,6 @@ OuterGap=10
 SingleGap=20
 ResizeStep=0.1
 HoverFocus=true
-FocusHighlight=true
 WarpPointer=true
 OpenAtPointer=true
 Groups=true
@@ -114,7 +111,7 @@ Scratchpads=true
 - Mouse-based resizing follows KWin and updates split ratios after the drag ends.
 - Application IDs differ between native, Flatpak and XWayland builds; some rules may need adjustment.
 - Fullscreen browser-video focus has regression tests; different browser/session combinations still need user testing.
-- Tested with 58 tiling and 13 animation regression tests and 6 development installer tests. These simulate windows and do not replace live compositor testing.
+- Tested with 55 tiling and 13 animation regression tests and 6 development installer tests. These simulate windows and do not replace live compositor testing.
 
 ## Remove
 
